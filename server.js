@@ -7,6 +7,8 @@ const io = socketIO(PORT, {
 });
 
 io.on('connection', (socket) => {
-  console.log('new client connected' + socket.id);
+  console.log(`new client connected ■ socket-id : ${socket.id}`);
   io.emit('join', {message: 'new guy joined'});
+
+  socket.on('draw', (data) => socket.broadcast.emit('draw', {line: data}));
 });

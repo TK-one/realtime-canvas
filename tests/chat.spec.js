@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 import chai from 'chai';
 
+const assert = chai.assert;
 const expect = chai.expect;
 const should = chai.should();
 const PORT = process.env.PORT;
@@ -42,6 +43,37 @@ describe('chat server', () => {
         client1.disconnect();
         done();
       }
+    });
+  });
+
+  it('should draw line to all connected users when user draw line', (done) => {
+    let client1 = io.connect(socketURL, options);
+    let line = {
+      current: {x: 1, y: 2},
+      prev: {x: 3, y: 4}
+    };
+
+    client1.on('connect', (data) => {
+      
+      // connect second connection
+      let client2 = io.connect(socketURL, options);
+
+      client2.on('connect', (data) => {
+        client2.emit('draw', line);
+      });
+
+      client2.on('draw', (data) => {
+        assert.fail(0, 1, 'be not executed');
+      });
+    });
+
+    client1.on('draw', (data) => {
+
+      // check draw event is driven
+      expect(data).to.be.a('object');
+      expect(data.line).to.be.eql(line);
+      client1.disconnect();
+      done();
     });
   });
 }); 
