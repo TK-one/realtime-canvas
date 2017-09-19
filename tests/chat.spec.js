@@ -61,17 +61,13 @@ describe('chat server', () => {
       client2.on('connect', (data) => {
         client2.emit('draw', line);
       });
-
-      client2.on('draw', (data) => {
-        assert.fail(0, 1, 'be not executed');
-      });
     });
 
     client1.on('draw', (data) => {
 
       // check draw event is driven
       expect(data).to.be.a('object');
-      expect(data.line).to.be.eql(line);
+      expect(data).to.be.eql(line);
       client1.disconnect();
       done();
     });
