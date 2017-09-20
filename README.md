@@ -32,7 +32,7 @@ These instructions will get you a copy of the project and running on your local 
   ```
   npm install
   ```
-4. run Server on port 3000 and open public/index.html file with your browser.
+4. run server on port 3000 and open public/index.html file with your browser.
   ```
   npm start
   ```
